@@ -1,0 +1,2 @@
+= About this
+bin/dp is a command to simplify a GPX file.
