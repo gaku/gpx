@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" creator="Oregon 300" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+  <metadata>
+    <link href="http://www.garmin.com">
+      <text>Garmin International</text>
+    </link>
+    <time>2011-06-08T04:32:24Z</time>
+  </metadata>
+  <wpt lat="33.430467" lon="-112.045765">
+    <ele>409.88</ele>
+    <time>2011-04-30T01:26:20Z</time>
+    <name>001</name>
+    <desc>29-APR-11 6:26:20PM</desc>
+    <sym>School</sym>
+  </wpt>
+  <trk>
+    <name>Current Track: 06 JUN 2011 16:13</name>
+      <trkseg>
+        <trkpt lat="37.367097" lon="-122.111268"><ele>73.68</ele><time>2011-06-06T23:13:13Z</time></trkpt>
+        <trkpt lat="37.367097" lon="-122.111268"><ele>48.68</ele><time>2011-06-06T23:13:14Z</time></trkpt>
+        <trkpt lat="37.367097" lon="-122.111268"><ele>47.72</ele><time>2011-06-06T23:13:15Z</time></trkpt>
+        <trkpt lat="37.367097" lon="-122.111268"><ele>47.72</ele><time>2011-06-06T23:13:16Z</time></trkpt>
+      </trkseg>
+  </trk>
+</gpx>
