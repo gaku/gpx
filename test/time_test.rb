@@ -21,5 +21,6 @@ class TimeTest < Test::Unit::TestCase
     assert_equal 23, t.hour
     assert_equal 13, t.min
     assert_equal 14, t.sec
+    assert_equal 0, t.utc_offset
   end
 end
