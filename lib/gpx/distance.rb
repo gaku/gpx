@@ -4,6 +4,7 @@ module GPX
     RADIAN_PER_DEGREE = Math::PI / 180.0
 
     def distance(p1, p2)
+      # compute distance in km between to geo points.
       # deltas
       dlat = (p1.lat - p2.lat) * RADIAN_PER_DEGREE
       dlon = (p1.lon - p2.lon) * RADIAN_PER_DEGREE
