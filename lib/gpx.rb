@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'nokogiri'
 require 'gpx/geopoint'
+require 'gpx/time'
 
 module GPX
   class GpxFile
