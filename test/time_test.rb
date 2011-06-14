@@ -3,15 +3,6 @@ require 'date'
 require 'gpx/time'
 
 class TimeTest < Test::Unit::TestCase
-  def test_time
-    input = "2011-05-06T23:13:13Z"
-    t = DateTime.strptime(input, '%Y-%m-%dT%H:%M:%SZ')
-
-    input2 = "2011-05-06T23:13:19Z"
-    t2 = DateTime.strptime(input2, '%Y-%m-%dT%H:%M:%SZ')
-
-    #puts t2 - t
-  end
   def test_parse
     input = "2011-05-06T23:13:14Z"    
     t = GPX::Time::Parse(input)
