@@ -1,3 +1,4 @@
+require 'date'
 module GPX
   class Time
     def self.Parse(time_string)
