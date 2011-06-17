@@ -1,8 +1,14 @@
+#!/usr/bin/env ruby
 # -*- mode:ruby -*-
 # filter gpx track points near specified location (such as home)
 # filter distance 300m
 # center lat/lon
 
+# add lib directory if the command is executed from the dev tree.
+if File.exists?(File.join(File.expand_path('../..', __FILE__), '.git'))
+  dev_lib_path = File.expand_path('../../lib', __FILE__)
+  $:.unshift(dev_lib_path)
+end
 require 'rubygems'
 require 'optparse'
 require 'nokogiri'
