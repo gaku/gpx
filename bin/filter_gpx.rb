@@ -6,10 +6,11 @@ require 'rubygems'
 require 'optparse'
 require 'nokogiri'
 require 'gpx'
+require 'gpx/distance'
+require 'douglas_peucker'
 
 class GpxFile
   def initialize(file)
-    puts "open:#{file}"
     @xml = Nokogiri::XML(open(file))
   end
 
@@ -20,24 +21,46 @@ class GpxFile
     end
   end
 
+  def process_trk(&block)
+    trk = @xml.css('trk')
+    trk.each do |trk|
+      yield trk
+    end
+  end
+
   def dump
     @xml
   end
 end
 
+def GetGeoPoint(trkpt)
+  return GPX::GeoPoint.new(trkpt.xpath('@lat').to_s.to_f, trkpt.xpath('@lon').to_s.to_f)
+end
+
 
 def main
-  distance = 0.3 # km
+  min_distance = 0.3 # km
   min_seconds = 60 * 5 # Minimum 5 minutes required
+  flag_simplify = false
+  center = GPX::GeoPoint.new(37.367142, -122.111287)
 
   ARGV.options { |opt|
-    opt.on('-d DISTANCE', '--distance DISTANCE', 'distance in km') { |v| distance = v }
+    opt.on('-l LAT,LON', '--latlon LAT,LON', 'center lat/lon') do |v|
+      lat,lon = v.split(',')
+      if lon == nil
+        $stderr.puts "lat ong error"
+        exit 1
+      end
+      center = GPX::GeoPoint.new(lat.to_f, lon.to_f)
+    end
+    opt.on('-d DISTANCE', '--distance DISTANCE', 'distance in km') { |v| min_distance = v.to_f }
     opt.on('-m MINIMUM', '--minimum MINIMUM', 'minimum time in seconds') { |v| min_seconds = v.to_i }
+    opt.on('-s', '--simplify', 'simplify gpx trksegs') { flag_simplify = true }
     opt.parse!(ARGV)
   }
 
   if ARGV.length != 1
-    puts 'specify a gpx file to process'
+    $stderr.puts 'specify a gpx file to process'
     exit 1
   end
 
@@ -51,8 +74,49 @@ def main
       # pruning the trackseg.
       $stderr.puts "Removing a short trkseg (#{duration} secs)"
       trkseg.remove
-    else
-      $stderr.puts "Output a trkseg (#{duration} secs)"
+      next
+    end
+    # privacy filtering.
+    if center
+      trkpts.each do |trkpt|
+        point = GetGeoPoint(trkpt)
+        distance = GPX::Distance::distance(point, center)
+
+	if distance < min_distance
+          trkpt.remove
+        end
+      end
+    end
+    # simplification?
+    if flag_simplify
+      points = trkpts.map { |trkpt| GetGeoPoint(trkpt) }
+      simplified_points = GPX::DouglasPeucker.new(points, 0.0001).simplify
+      keep_indeces = []
+      simplified_points.each do |point_to_keep|
+        idx = points.index(point_to_keep)
+        keep_indeces << idx
+      end
+      trkpts.to_a.each_with_index do |trkpt,idx|
+        if !keep_indeces.index(idx)
+          # $stderr.puts "Drop #{idx}"
+          trkpt.remove
+        end
+      end
+    end
+  end
+
+  # final clean ups
+  gpx.process_trkseg do |trkseg|
+    num_trkpt = trkseg.css('trkpt').length
+    if num_trkpt == 0
+      trkseg.remove
+    end
+  end
+
+  gpx.process_trk do |trk|
+    num_trk = trk.css('trkseg').length
+    if num_trk == 0
+      trk.remove
     end
   end
   puts gpx.dump
