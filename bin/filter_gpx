@@ -1,3 +1,4 @@
+# -*- mode:ruby -*-
 # filter gpx track points near specified location (such as home)
 # filter distance 300m
 # center lat/lon
