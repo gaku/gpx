@@ -1,2 +1,2 @@
 = About this
-bin/dp is a command to simplify a GPX file.
+bin/filter_gpx is a command to filter and simplify a GPX file.
