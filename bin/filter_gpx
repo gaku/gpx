@@ -61,7 +61,7 @@ def main
       center = GPX::GeoPoint.new(lat.to_f, lon.to_f)
     end
     opt.on('-d DISTANCE', '--distance DISTANCE', 'distance in km') { |v| min_distance = v.to_f }
-    opt.on('-m MINIMUM', '--minimum MINIMUM', 'minimum time in seconds') { |v| min_seconds = v.to_i }
+    opt.on('-m MINIMUM', '--minimum MINIMUM', 'minimum time in seconds') { |v| min_seconds = Integer(v) }
     opt.on('-s', '--simplify', 'simplify gpx trksegs') { flag_simplify = true }
     opt.parse!(ARGV)
   }
