@@ -48,6 +48,11 @@ def main
     exit 1
   end
 
+  # show recipe
+  if flag_simplify
+    $stderr.puts "simplifying the gps tracks"
+  end
+
   gpx = GPX::File.new(ARGV[0])
   gpx.process_trkseg do |trkseg|
     trkpts = trkseg.css('trkpt')
