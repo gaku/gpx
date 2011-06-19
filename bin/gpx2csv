@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+# -*- mode:ruby -*-
+#
+# a command line tool to dump gpx trkpts in CSV format.
+#
+
+# add lib directory if the command is executed from the dev tree.
+if File.exists?(File.join(File.expand_path('../..', __FILE__), '.git'))
+  dev_lib_path = File.expand_path('../../lib', __FILE__)
+  $:.unshift(dev_lib_path)
+end
+require 'gpx/file'
+require 'gpx/geopoint'
+
+def GetGeoPoint(trkpt)
+  return GPX::GeoPoint.new(trkpt.xpath('@lat').to_s.to_f, trkpt.xpath('@lon').to_s.to_f)
+end
+
+def main
+  gpx = GPX::File.new(ARGV[0])
+  gpx.process_trkseg do |trkseg|
+    trkpts = trkseg.css('trkpt')
+    trkpts.each do |trkpt|
+      point = GetGeoPoint(trkpt)
+      puts "#{point.lat},#{point.lon}"
+    end
+  end
+end
+main
