@@ -14,31 +14,8 @@ require 'optparse'
 require 'nokogiri'
 require 'gpx'
 require 'gpx/distance'
+require 'gpx/file'
 require 'douglas_peucker'
-
-class GpxFile
-  def initialize(file)
-    @xml = Nokogiri::XML(open(file))
-  end
-
-  def process_trkseg(&block)
-    trksegs = @xml.css('trkseg')
-    trksegs.each do |trkseg|
-      yield trkseg
-    end
-  end
-
-  def process_trk(&block)
-    trk = @xml.css('trk')
-    trk.each do |trk|
-      yield trk
-    end
-  end
-
-  def dump
-    @xml
-  end
-end
 
 def GetGeoPoint(trkpt)
   return GPX::GeoPoint.new(trkpt.xpath('@lat').to_s.to_f, trkpt.xpath('@lon').to_s.to_f)
@@ -71,7 +48,7 @@ def main
     exit 1
   end
 
-  gpx = GpxFile.new(ARGV[0])
+  gpx = GPX::File.new(ARGV[0])
   gpx.process_trkseg do |trkseg|
     trkpts = trkseg.css('trkpt')
     start_t = GPX::Time::Parse(trkpts.first.css('time').text())
